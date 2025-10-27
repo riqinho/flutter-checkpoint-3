@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1000593189478",
+    "project_id": "checkpoint-3-7c16f",
+    "storage_bucket": "checkpoint-3-7c16f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000593189478:android:33ff3513affb4fc3bf1ba7",
+        "android_client_info": {
+          "package_name": "br.com.riqinho.checkpoint_3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhSvRdF18SeJSFsAlLJ1xsREQZKZNAJUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
