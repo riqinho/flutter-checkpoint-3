@@ -462,12 +462,12 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
       ),
 
       // salvar
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         backgroundColor: AppMagicColors.primary,
         foregroundColor: Colors.white,
         onPressed: _password == null ? null : _savePassword,
-        icon: const Icon(Icons.save),
-        label: const Text('Selar no Grimório'),
+        child: const Icon(Icons.check),
+        tooltip: "Selar no Grimório",
       ),
     );
   }

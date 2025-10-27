@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "🔮 Teste o Plano Plus!",
+                        "Teste o Plano Plus!",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
