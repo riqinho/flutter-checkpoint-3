@@ -19,6 +19,19 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.splash,
       onGenerateRoute: Routes.generateRoute,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: const Color(0xFFFAF8F5), // 🎨 fundo padrão
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF8B5CF6),
+          secondary: Color(0xFFE3B341),
+        ),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Color(0xFF1E1E1E)),
+          bodyMedium: TextStyle(color: Color(0xFF5E5E5E)),
+        ),
+        fontFamily: 'Poppins',
+      ),
     );
   }
 }

@@ -1,16 +1,130 @@
-# checkpoint_3
+# 🔮 SafeKey — Grimório Digital de Senhas
 
-A new Flutter project.
+> **Projeto Flutter + Firebase** desenvolvido como parte do exercício de **Desenvolvimento Android (2º semestre)**, transformado em um aplicativo temático e divertido com a estética de um **grimório de feitiços digitais**.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🧭 Visão Geral do Projeto
 
-A few resources to get you started if this is your first Flutter project:
+O **SafeKey** é um aplicativo que gera e gerencia senhas de forma segura e estilizada.  
+Inspirado em um **“grimório de feitiços”**, o app permite que o usuário conjure (gere), sele (salve) e visualize suas senhas, tudo integrado ao **Firebase Authentication** e **Cloud Firestore**.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🧩 Estrutura e Funcionalidades
+
+### 🪄 **1. Splash Screen**
+
+- Exibe uma animação Lottie mágica (círculo arcano).
+- Verifica se o usuário está logado e se deve mostrar a introdução.
+- Redireciona automaticamente para a tela apropriada (Intro, Login ou Home).
+
+### 📜 **2. Intro Screen**
+
+- Mostra 3 telas de introdução com animações, títulos e descrições:
+  1. _Descubra seus Encantamentos_
+  2. _Crie Senhas Poderosas_
+  3. _Proteja seu Grimório_
+- Permite avançar, voltar e ocultar a introdução para futuras execuções.
+
+### 🔐 **3. Login / Registro**
+
+- Formulário de autenticação com FirebaseAuth.
+- Login e criação de contas com e-mail e senha.
+- Snackbars personalizadas com mensagens temáticas (“Portais abertos”, “Feitiço falhou”…).
+- Feedback visual e estado de carregamento.
+
+### 🏠 **4. Home Screen**
+
+- Exibe a saudação personalizada com o e-mail do usuário.
+- Mostra um card promocional do **Plano Plus** (versão premium imaginária).
+- Lista de senhas salvas, carregadas em tempo real via `StreamBuilder`.
+- Cada senha pode ser:
+  - **Revelada / ocultada** (olho mágico 👁️).
+  - **Excluída** individualmente.
+- Estado vazio com ícone e mensagem mística.
+
+### ✨ **5. New Password Screen**
+
+- Permite gerar senhas com a API pública [SafeKey API](https://safekey-api-a1bd9aa97953.herokuapp.com/docs/).
+- Configurações ajustáveis: tamanho, letras minúsculas, maiúsculas, números e símbolos.
+- Exibe o resultado e permite copiar para a área de transferência.
+- Salva a senha no Firebase após pedir um título (com validação se estiver vazio).
+- Redireciona automaticamente para a tela Home após o salvamento.
+
+---
+
+## 🧠 Tecnologias Utilizadas
+
+| Categoria                | Ferramenta / Versão                                            |
+| ------------------------ | -------------------------------------------------------------- |
+| Framework                | Flutter                                                        |
+| Linguagem                | Dart                                                           |
+| Backend                  | Firebase Authentication / Firestore                            |
+| API de geração de senhas | SafeKey API                                                    |
+| Animações                | Lottie                                                         |
+| Estilo visual            | Tema claro “gregório” (tons pergaminho, dourado e roxo arcano) |
+
+---
+
+## ⚙️ Estrutura do Código
+
+```
+lib/
+│
+├── data/
+│ └── settings_repository.dart # controle de preferências locais
+│
+├── screens/
+│ ├── splash_screen.dart # verificação inicial e redirecionamento
+│ ├── intro_screen.dart # introdução em 3 páginas com Lottie
+│ ├── login_screen.dart # autenticação Firebase
+│ ├── home_screen.dart # listagem e exclusão de senhas
+│ └── newpassword_screen.dart # geração e salvamento de senhas
+│
+├── routes.dart # controle de rotas nomeadas
+└── main.dart # inicialização e tema global
+```
+
+---
+
+## 🎥 Demonstração
+
+📺 **[Clique aqui para assistir ao vídeo do app funcionando](#)**
+
+---
+
+## 🏫 Aulas de Referência
+
+> ✏️ _Espaço reservado para indicar quais aulas / tópicos serviram de base para cada parte:_
+
+| Funcionalidade                  | Aula                                       |
+| ------------------------------- | ------------------------------------------ |
+| Autenticação (Login e Registro) | flutter-firebase-auth                      |
+| Integração com Firestore        | flutter-firebase-firestore-manual          |
+| Splash, Introdução e lottie     | flutter-rotas-nomeadas-com-sharedprefences |
+| Requisições HTTP (API SafeKey)  | flutter-webservices-crud-endereco          |
+
+---
+
+## 🔐 Observação Importante — Controle por Usuário
+
+> Atualmente, todas as senhas são salvas na coleção global **`passwords`**, o que significa que qualquer usuário logado poderia visualizar registros de outros.
+>
+> 💡 **Melhoria planejada:** incluir o campo `uid` (ou criar uma subcoleção `users/{uid}/passwords`) para que cada usuário visualize apenas suas próprias senhas.  
+> Também é recomendada a configuração de **regras de segurança no Firestore** garantindo esse isolamento.
+
+---
+
+## 🌟 Créditos e Agradecimentos
+
+- **Professor(a):** Heider Lopes
+- **Curso:** Desenvolvimento Android (Centro Universitário Ingá)
+- **Aluno:** Rick Alves Domingues
+- **Ano:** 2025
+- Tema visual e narrativa “Gregório”: inspiração autoral 🎨
+
+---
+
+> “A cada senha gerada, um novo feitiço é conjurado.  
+> Proteja bem seu grimório.” 🔮

@@ -4,6 +4,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+class AppMagicColors {
+  static const primary = Color(0xFF8B5CF6); // roxo arcano
+  static const gold = Color(0xFFE3B341); // dourado leve
+  static const bg = Color(0xFFFAF8F5); // pergaminho
+  static const card = Color(0xFFF2EEE9); // marfim
+  static const text = Color(0xFF1E1E1E); // texto principal
+  static const text2 = Color(0xFF5E5E5E); // texto secundário
+  static const success = Color(0xFF3BB273);
+  static const error = Color(0xFFC94E4E);
+}
+
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
 
@@ -22,25 +33,25 @@ class _IntroScreenState extends State<IntroScreen> {
 
   Future<void> _initRepository() async {
     final repo = await SettingsRepository.create();
-    setState(() {
-      _settingsRepository = repo;
-    });
+    setState(() => _settingsRepository = repo);
   }
 
-  final List<Map<String, String>> _pages = [
+  final List<Map<String, String>> _pages = const [
     {
-      'title': 'Welcome to the App',
-      'description': 'This is the first intro screen description.',
+      'title': 'Descubra Seus Encantamentos',
+      'description':
+          'Aprenda a criar e guardar seus feitiços digitais com estilo e segurança.',
       'image': 'assets/lottie/intro1.json',
     },
     {
-      'title': 'Discover Features',
-      'description': 'This is the second intro screen description.',
+      'title': 'Crie Senhas Poderosas',
+      'description': 'Gere combinações únicas com o toque da magia moderna.',
       'image': 'assets/lottie/intro2.json',
     },
     {
-      'title': 'Get Started Now',
-      'description': 'This is the third intro screen description.',
+      'title': 'Proteja Seu Grimório',
+      'description':
+          'Guarde suas senhas encantadas com total segurança no Firebase.',
       'image': 'assets/lottie/intro3.json',
     },
   ];
@@ -52,21 +63,28 @@ class _IntroScreenState extends State<IntroScreen> {
   void _onNext() {
     if (_currentPage < _pages.length - 1) {
       _pageController.nextPage(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeIn,
+        duration: const Duration(milliseconds: 320),
+        curve: Curves.easeInOut,
       );
     } else {
       _finishIntro();
     }
   }
 
+  void _onBack() {
+    if (_currentPage > 0) {
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 320),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
   Future<void> _finishIntro() async {
     await _settingsRepository?.setShowIntro(!_dontShowAgain);
     if (!mounted) return;
-    // Verifica se há usuário logado no Firebase
-    final user = FirebaseAuth.instance.currentUser;
 
-    // Decide para onde ir
+    final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       Navigator.pushReplacementNamed(context, Routes.home);
     } else {
@@ -74,99 +92,216 @@ class _IntroScreenState extends State<IntroScreen> {
     }
   }
 
-  void _onBack() {
-    if (_currentPage > 0) {
-      _pageController.previousPage(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final isLastPage = _currentPage == _pages.length - 1;
+
+    final titleStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
+      color: AppMagicColors.text,
+      fontWeight: FontWeight.w800,
+      letterSpacing: .2,
+    );
+
+    final descStyle = Theme.of(
+      context,
+    ).textTheme.bodyLarge?.copyWith(color: AppMagicColors.text2, height: 1.35);
+
     return Scaffold(
+      backgroundColor: AppMagicColors.bg,
       body: SafeArea(
-        child: Column(
-          children: [
-            // contéudo da intro
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _pages.length,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
-                itemBuilder: (context, index) {
-                  final page = _pages[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Column(
-                      children: [
-                        Expanded(child: Lottie.asset(page['image']!)),
-                        Text(
-                          page['title']!,
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 12),
-                        Text(
-                          page['description']!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          // leve “aura” mística no fundo
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [AppMagicColors.bg, AppMagicColors.card],
             ),
-            if (isLastPage)
+          ),
+          child: Column(
+            children: [
+              // conteúdo
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: _pages.length,
+                  onPageChanged: (index) =>
+                      setState(() => _currentPage = index),
+                  itemBuilder: (context, index) {
+                    final page = _pages[index];
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
+                      child: Column(
+                        children: [
+                          // Lottie – você coloca os arquivos depois
+                          Expanded(
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 420),
+                              child: Lottie.asset(
+                                page['image']!,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            page['title']!,
+                            style: titleStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: Text(
+                              page['description']!,
+                              style: descStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+
+                          // indicadores (dots)
+                          _Dots(length: _pages.length, index: _currentPage),
+                          const SizedBox(height: 12),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // checkbox na última página
+              if (isLastPage)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        activeColor: AppMagicColors.primary,
+                        value: _dontShowAgain,
+                        onChanged: (val) =>
+                            setState(() => _dontShowAgain = val ?? false),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Não mostrar essa introdução novamente',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: AppMagicColors.text2),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+              // navegação
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                  vertical: 16.0,
+                ),
                 child: Row(
                   children: [
-                    Checkbox(
-                      value: _dontShowAgain,
-                      onChanged: (val) {
-                        setState(() {
-                          _dontShowAgain = val ?? false;
-                        });
-                      },
-                    ),
-                    Expanded(
-                      child: Text('Não mostrar essa introdução novamente'),
+                    // Voltar (só aparece após a 1ª página)
+                    if (_currentPage > 0)
+                      OutlinedButton.icon(
+                        onPressed: _onBack,
+                        icon: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          size: 16,
+                          color: AppMagicColors.primary,
+                        ),
+                        label: const Text(
+                          'Voltar',
+                          style: TextStyle(color: AppMagicColors.primary),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(
+                            color: AppMagicColors.gold,
+                            width: 1.5,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      )
+                    else
+                      const SizedBox(width: 96),
+
+                    const Spacer(),
+
+                    // Avançar / Concluir
+                    ElevatedButton.icon(
+                      onPressed: _onNext,
+                      icon: Icon(
+                        isLastPage
+                            ? Icons.check_circle_outline
+                            : Icons.arrow_forward_rounded,
+                      ),
+                      label: Text(isLastPage ? 'Concluir' : 'Avançar'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppMagicColors.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                      ),
                     ),
                   ],
                 ),
               ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24.0,
-                vertical: 12.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (_currentPage > 0)
-                    TextButton(onPressed: _onBack, child: Text('Voltar'))
-                  else
-                    SizedBox(width: 80), // placeholder para alinhamento
-                  TextButton(
-                    onPressed: _onNext,
-                    child: Text(isLastPage ? 'Concluir' : 'Avançar'),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+/// Dots indicativos de página (com animação suave)
+class _Dots extends StatelessWidget {
+  final int length;
+  final int index;
+  const _Dots({required this.length, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      children: List.generate(length, (i) {
+        final active = i == index;
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 240),
+          curve: Curves.easeOut,
+          width: active ? 26 : 10,
+          height: 10,
+          decoration: BoxDecoration(
+            color: active
+                ? AppMagicColors.primary
+                : AppMagicColors.gold.withOpacity(.55),
+            borderRadius: BorderRadius.circular(999),
+            boxShadow: active
+                ? [
+                    BoxShadow(
+                      color: AppMagicColors.primary.withOpacity(.28),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                : [],
+          ),
+        );
+      }),
     );
   }
 }
