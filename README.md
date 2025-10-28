@@ -81,6 +81,9 @@ lib/
 │ ├── login_screen.dart # autenticação Firebase
 │ ├── home_screen.dart # listagem e exclusão de senhas
 │ └── newpassword_screen.dart # geração e salvamento de senhas
+|
+├── widgets/
+│ ├── password_result # widget da senha gerada
 │
 ├── routes.dart # controle de rotas nomeadas
 └── main.dart # inicialização e tema global
@@ -119,7 +122,7 @@ lib/
 ## 🌟 Créditos e Agradecimentos
 
 - **Professor(a):** Heider Lopes
-- **Curso:** Desenvolvimento Android (Centro Universitário Ingá)
+- **Curso:** Desenvolvimento Cross Plataforma - FIAP
 - **Aluno:** Rick Alves Domingues
 - **Ano:** 2025
 - Tema visual e narrativa “Gregório”: inspiração autoral 🎨
