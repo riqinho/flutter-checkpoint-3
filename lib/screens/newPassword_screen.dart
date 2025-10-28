@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:checkpoint_3/widgets/password_result.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -137,7 +138,7 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
     final p = _password;
     if (p == null) return;
     Clipboard.setData(ClipboardData(text: p));
-    _snack('Senha copiada para a área mágica ✨');
+    _snack('Senha copiada para a área mágica');
   }
 
   Future<void> _savePassword() async {
@@ -315,35 +316,7 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
         child: Column(
           children: [
             // senha gerada
-            Card(
-              color: AppMagicColors.card,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: BorderSide(color: AppMagicColors.gold.withOpacity(.5)),
-              ),
-              child: ListTile(
-                leading: const Icon(
-                  Icons.auto_fix_high_outlined,
-                  color: AppMagicColors.primary,
-                ),
-                title: Text(
-                  _password ?? 'Nenhum feitiço conjurado',
-                  style: titleStyle,
-                ),
-                subtitle: Text(
-                  _password == null
-                      ? 'Toque em “Conjurar Senha” para gerar seu encantamento.'
-                      : 'Toque para copiar para o pergaminho do sistema.',
-                  style: bodyStyle,
-                ),
-                onTap: _password == null ? null : _copyPassword,
-                trailing: IconButton(
-                  icon: const Icon(Icons.copy, color: AppMagicColors.primary),
-                  tooltip: 'Copiar senha',
-                  onPressed: _password == null ? null : _copyPassword,
-                ),
-              ),
-            ),
+            PasswordResultCard(password: _password, onCopy: _copyPassword),
             const SizedBox(height: 12),
 
             // opções (expansível)

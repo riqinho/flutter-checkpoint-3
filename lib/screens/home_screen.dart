@@ -1,16 +1,8 @@
+import 'package:checkpoint_3/main.dart';
 import 'package:checkpoint_3/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-class AppMagicColors {
-  static const primary = Color(0xFF8B5CF6);
-  static const gold = Color(0xFFE3B341);
-  static const bg = Color(0xFFFAF8F5);
-  static const card = Color(0xFFF2EEE9);
-  static const text = Color(0xFF1E1E1E);
-  static const text2 = Color(0xFF5E5E5E);
-}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,20 +12,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // collection criada no firebase database
   final CollectionReference passwordRefs = FirebaseFirestore.instance
       .collection('passwords');
 
   // controla quais itens estão revelados (por id do documento)
   final Set<String> _revealed = {};
 
+  // função para deslogar o usuário
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
   }
 
+  // função para deletar senha
   void deletePassword(DocumentSnapshot doc) {
     passwordRefs.doc(doc.id).delete();
   }
 
+  // função para revelear/ocultar senha
   void _toggleReveal(String docId) {
     setState(() {
       if (_revealed.contains(docId)) {
@@ -44,8 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  String _masked() => '•' * 8; // não revela o tamanho real da senha
-
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
@@ -55,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppMagicColors.bg,
         elevation: 0,
         title: const Text(
-          'Grimório',
+          'Meu Grimório',
           style: TextStyle(
             color: AppMagicColors.text,
             fontWeight: FontWeight.bold,
@@ -82,69 +76,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          // imagem do promocional - plus
           const SizedBox(height: 16),
-
-          // bloco promocional plano Plus (ícone trocado)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppMagicColors.card,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppMagicColors.gold.withOpacity(.5)),
-              boxShadow: [
-                BoxShadow(
-                  color: AppMagicColors.primary.withOpacity(.08),
-                  blurRadius: 10,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.auto_awesome, // ✨ mais “mágico” que o escudo
-                  size: 84,
-                  color: AppMagicColors.primary,
-                ),
-                const SizedBox(width: 18),
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Teste o Plano Plus!",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AppMagicColors.text,
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        "Desbloqueie novos feitiços e proteja suas senhas com poder arcano avançado. "
-                        "Experimente a magia premium gratuitamente por 7 dias!",
-                        style: TextStyle(
-                          color: AppMagicColors.text2,
-                          fontSize: 14,
-                          height: 1.3,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          SizedBox(
+            width: double.infinity,
+            child: Image.asset('assets/images/banner-plus.png'),
           ),
-
           const SizedBox(height: 24),
           const Text(
             'Suas senhas salvas aparecerão aqui.',
             style: TextStyle(fontSize: 15, color: AppMagicColors.text2),
           ),
           const SizedBox(height: 20),
-
+          // lista de senhas salvas
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: passwordRefs.snapshots(),
@@ -211,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                         side: BorderSide(
-                          color: AppMagicColors.gold.withOpacity(.4),
+                          color: AppMagicColors.gold.withOpacity(0.4),
                         ),
                       ),
                       child: ListTile(
@@ -229,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: const TextStyle(color: AppMagicColors.text),
                         ),
                         subtitle: Text(
-                          revealed ? password : _masked(),
+                          revealed ? password : '•' * password.length,
                           style: const TextStyle(color: AppMagicColors.text2),
                         ),
                         trailing: IconButton(
@@ -241,7 +185,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           tooltip: "Excluir Senha",
                         ),
                         onTap: () {
-                          // também alterna ao tocar na linha
                           _toggleReveal(id);
                         },
                       ),
@@ -257,8 +200,8 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppMagicColors.primary,
         foregroundColor: Colors.white,
         onPressed: () => Navigator.pushNamed(context, Routes.newPassword),
-        child: const Icon(Icons.add),
         tooltip: "Nova Senha",
+        child: const Icon(Icons.add),
       ),
     );
   }

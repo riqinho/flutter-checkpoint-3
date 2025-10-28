@@ -107,19 +107,12 @@ class _IntroScreenState extends State<IntroScreen> {
     ).textTheme.bodyLarge?.copyWith(color: AppMagicColors.text2, height: 1.35);
 
     return Scaffold(
-      backgroundColor: AppMagicColors.bg,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Container(
           width: double.infinity,
           height: double.infinity,
           // leve “aura” mística no fundo
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [AppMagicColors.bg, AppMagicColors.card],
-            ),
-          ),
           child: Column(
             children: [
               // conteúdo
