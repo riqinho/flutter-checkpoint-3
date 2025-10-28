@@ -125,7 +125,7 @@ lib/
 - **Curso:** Desenvolvimento Cross Plataforma - FIAP
 - **Aluno:** Rick Alves Domingues
 - **Ano:** 2025
-- Tema visual e narrativa “Gregório”: inspiração autoral 🎨
+- Tema visual e narrativa Grimório: inspiração autoral e implantado com ajuda da IA
 
 ---
 
