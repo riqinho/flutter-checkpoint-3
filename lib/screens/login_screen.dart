@@ -1,17 +1,7 @@
+import 'package:checkpoint_3/main.dart';
 import 'package:checkpoint_3/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-class AppMagicColors {
-  static const primary = Color(0xFF8B5CF6); // roxo arcano
-  static const gold = Color(0xFFE3B341); // dourado leve
-  static const bg = Color(0xFFFAF8F5); // pergaminho
-  static const card = Color(0xFFF2EEE9); // marfim
-  static const text = Color(0xFF1E1E1E); // texto principal
-  static const text2 = Color(0xFF5E5E5E); // texto secundário
-  static const success = Color(0xFF3BB273); // verde calmo
-  static const error = Color(0xFFC94E4E); // vermelho místico
-}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
