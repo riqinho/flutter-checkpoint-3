@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:checkpoint_3/main.dart';
+import 'package:checkpoint_3/widgets/custom_textFild.dart';
 import 'package:checkpoint_3/widgets/password_result.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -145,94 +146,75 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
       context: context,
       barrierDismissible: false,
       builder: (ctx) {
+        final formKey = GlobalKey<FormState>();
         final c = TextEditingController();
-        String? errorText;
-        return StatefulBuilder(
-          builder: (ctx, setLocal) {
-            return AlertDialog(
-              backgroundColor: AppMagicColors.card,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              title: const Text(
-                'Selar feitiço',
-                style: TextStyle(
-                  color: AppMagicColors.text,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: c,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      labelText: 'Título do feitiço',
-                      hintText: 'Ex.: Cofre do trabalho',
-                      errorText: errorText,
-                      prefixIcon: const Icon(
-                        Icons.menu_book_outlined,
+
+        return AlertDialog(
+          backgroundColor: AppMagicColors.card,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Text(
+            'Selar feitiço',
+            style: TextStyle(
+              color: AppMagicColors.text,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          content: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: c,
+                  autofocus: true,
+                  style: const TextStyle(color: AppMagicColors.text),
+                  decoration: const InputDecoration(
+                    labelText: 'Título do feitiço',
+                    hintText: 'Ex.: Cofre do trabalho',
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
                         color: AppMagicColors.primary,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: AppMagicColors.gold.withOpacity(.6),
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: AppMagicColors.gold.withOpacity(.6),
-                        ),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                        borderSide: BorderSide(
-                          color: AppMagicColors.primary,
-                          width: 2,
-                        ),
+                        width: 2,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Dê um nome para identificar sua senha no grimório.',
-                    style: TextStyle(color: AppMagicColors.text2, fontSize: 12),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(ctx),
-                  child: const Text('Cancelar'),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppMagicColors.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () {
-                    final t = c.text.trim();
-                    if (t.isEmpty) {
-                      setLocal(
-                        () => errorText = 'Dê um título ao seu feitiço ✍️',
-                      );
-                      return; // não fecha
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Dê um título ao seu feitiço';
                     }
-                    Navigator.pop(ctx, t);
+                    return null;
                   },
-                  child: const Text('Selar'),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Dê um nome para identificar sua senha no grimório.',
+                  style: TextStyle(color: AppMagicColors.text2, fontSize: 12),
                 ),
               ],
-            );
-          },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppMagicColors.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                if (!formKey.currentState!.validate()) return;
+                Navigator.pop(ctx, c.text.trim());
+              },
+              child: const Text('Selar'),
+            ),
+          ],
         );
       },
     );
@@ -246,7 +228,7 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
       });
 
       _snack(
-        'Feitiço selado no grimório! 🧿',
+        'Feitiço selado no grimório!',
         color: AppMagicColors.success,
         icon: Icons.check_circle_outline,
       );
@@ -316,9 +298,10 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
                 side: BorderSide(color: AppMagicColors.gold.withOpacity(.5)),
               ),
               child: AnimatedCrossFade(
-                crossFadeState: _expanded
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
+                crossFadeState:
+                    _expanded
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
                 duration: const Duration(milliseconds: 300),
                 firstChild: Padding(
                   padding: const EdgeInsets.all(16),
@@ -407,16 +390,17 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
                   ),
                 ),
                 onPressed: _loading ? null : _generatePassword,
-                label: _loading
-                    ? const SizedBox(
-                        height: 18,
-                        width: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Text('Conjurar Senha'),
+                label:
+                    _loading
+                        ? const SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                        : const Text('Conjurar Senha'),
               ),
             ),
           ],

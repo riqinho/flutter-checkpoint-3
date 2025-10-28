@@ -3,6 +3,7 @@ import 'package:checkpoint_3/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -38,6 +39,31 @@ class _HomeScreenState extends State<HomeScreen> {
         _revealed.add(docId);
       }
     });
+  }
+
+  void _snack(
+    String msg, {
+    Color color = AppMagicColors.primary,
+    IconData icon = Icons.auto_awesome,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: color,
+        content: Row(
+          children: [
+            Icon(icon, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(child: Text(msg)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _copyPassword(String value) {
+    Clipboard.setData(ClipboardData(text: value));
+    _snack('Senha copiada para a área mágica');
   }
 
   @override
@@ -185,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           tooltip: "Excluir Senha",
                         ),
                         onTap: () {
-                          _toggleReveal(id);
+                          _copyPassword(password);
                         },
                       ),
                     );

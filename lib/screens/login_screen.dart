@@ -1,5 +1,6 @@
 import 'package:checkpoint_3/main.dart';
 import 'package:checkpoint_3/routes.dart';
+import 'package:checkpoint_3/widgets/custom_textFild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -204,41 +205,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 24),
 
-                      // E-mail
-                      TextFormField(
+                      CustomTextField(
+                        label: 'E-mail do mago',
+                        icon: Icons.email_outlined,
                         controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        style: const TextStyle(color: AppMagicColors.text),
-                        decoration: _inputDecoration(
-                          label: 'E-mail do mago',
-                          icon: Icons.email_outlined,
-                        ),
-                        validator: (value) => (value == null || value.isEmpty)
-                            ? 'Insira um e-mail do seu grimório 🪶'
-                            : null,
+                        validator:
+                            (value) =>
+                                (value == null || value.isEmpty)
+                                    ? 'Insira um e-mail do seu grimório'
+                                    : null,
                       ),
                       const SizedBox(height: 14),
-
-                      // Senha
-                      TextFormField(
+                      CustomTextField(
+                        label: 'Palavra-chave',
+                        icon: Icons.lock_outline,
                         controller: _passwordController,
                         obscureText: _isObscure,
-                        style: const TextStyle(color: AppMagicColors.text),
-                        validator: (value) => (value == null || value.isEmpty)
-                            ? 'Digite a palavra-chave do feitiço 🔐'
-                            : null,
-                        decoration: _inputDecoration(
-                          label: 'Palavra-chave',
-                          icon: Icons.lock_outline,
-                          suffix: IconButton(
-                            onPressed: () =>
-                                setState(() => _isObscure = !_isObscure),
-                            icon: Icon(
-                              _isObscure
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: AppMagicColors.primary,
-                            ),
+                        validator:
+                            (value) =>
+                                (value == null || value.isEmpty)
+                                    ? 'Digite a palavra-chave do feitiço'
+                                    : null,
+                        suffix: IconButton(
+                          onPressed:
+                              () => setState(() => _isObscure = !_isObscure),
+                          icon: Icon(
+                            _isObscure
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: AppMagicColors.primary,
                           ),
                         ),
                       ),
@@ -247,63 +242,63 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       _isLoading
                           ? const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8),
-                              child: CircularProgressIndicator(
-                                color: AppMagicColors.primary,
-                              ),
-                            )
-                          : Column(
-                              children: [
-                                // Entrar
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppMagicColors.primary,
-                                      foregroundColor: Colors.white,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 14,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      elevation: 2,
-                                    ),
-                                    onPressed: _signIn,
-                                    child: const Text(
-                                      'Entrar no Grimório',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                // Registrar
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      foregroundColor: AppMagicColors.primary,
-                                      side: const BorderSide(
-                                        color: AppMagicColors.gold,
-                                        width: 2,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 14,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      textStyle: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    onPressed: _signUp,
-                                    child: const Text('Criar meu Grimório'),
-                                  ),
-                                ),
-                              ],
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: CircularProgressIndicator(
+                              color: AppMagicColors.primary,
                             ),
+                          )
+                          : Column(
+                            children: [
+                              // Entrar
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppMagicColors.primary,
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    elevation: 2,
+                                  ),
+                                  onPressed: _signIn,
+                                  child: const Text(
+                                    'Entrar no Grimório',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              // Registrar
+                              SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: AppMagicColors.primary,
+                                    side: const BorderSide(
+                                      color: AppMagicColors.gold,
+                                      width: 2,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  onPressed: _signUp,
+                                  child: const Text('Criar meu Grimório'),
+                                ),
+                              ),
+                            ],
+                          ),
                     ],
                   ),
                 ),
@@ -311,42 +306,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  InputDecoration _inputDecoration({
-    required String label,
-    required IconData icon,
-    Widget? suffix,
-  }) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: const TextStyle(color: AppMagicColors.text2),
-      prefixIcon: Icon(icon, color: AppMagicColors.primary),
-      suffixIcon: suffix,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Colors.transparent),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: AppMagicColors.gold.withOpacity(.55)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppMagicColors.primary, width: 2),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppMagicColors.error, width: 1.8),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppMagicColors.error, width: 2),
       ),
     );
   }

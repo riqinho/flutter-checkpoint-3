@@ -33,15 +33,17 @@ Inspirado em um **“grimório de feitiços”**, o app permite que o usuário c
 - Login e criação de contas com e-mail e senha.
 - Snackbars personalizadas com mensagens temáticas (“Portais abertos”, “Feitiço falhou”…).
 - Feedback visual e estado de carregamento.
+- Inputs de textos customizados 
 
 ### 🏠 **4. Home Screen**
 
 - Exibe a saudação personalizada com o e-mail do usuário.
-- Mostra um card promocional do **Plano Plus** (versão premium imaginária).
+- Mostra uma imagem promocional do **Plano Plus** (versão premium imaginária).
 - Lista de senhas salvas, carregadas em tempo real via `StreamBuilder`.
 - Cada senha pode ser:
   - **Revelada / ocultada** (olho mágico 👁️).
   - **Excluída** individualmente.
+  - **Copiada** para a área de transferência 
 - Estado vazio com ícone e mensagem mística.
 
 ### ✨ **5. New Password Screen**
@@ -83,7 +85,8 @@ lib/
 │ └── newpassword_screen.dart # geração e salvamento de senhas
 |
 ├── widgets/
-│ ├── password_result # widget da senha gerada
+| ├── custom_field.dart # widget do input de texto
+│ ├── password_result.dart # widget da senha gerada
 │
 ├── routes.dart # controle de rotas nomeadas
 └── main.dart # inicialização e tema global
@@ -93,13 +96,11 @@ lib/
 
 ## 🎥 Demonstração
 
-📺 **[Clique aqui para assistir ao vídeo do app funcionando](#)**
+📺 **[Clique aqui para assistir ao vídeo do app funcionando](https://youtu.be/rYWytxMk7Oo)**
 
 ---
 
 ## 🏫 Aulas de Referência
-
-> ✏️ _Espaço reservado para indicar quais aulas / tópicos serviram de base para cada parte:_
 
 | Funcionalidade                  | Aula                                       |
 | ------------------------------- | ------------------------------------------ |
