@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:checkpoint_3/main.dart';
-import 'package:checkpoint_3/widgets/custom_textFild.dart';
 import 'package:checkpoint_3/widgets/password_result.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -225,6 +225,7 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
       await FirebaseFirestore.instance.collection('passwords').add({
         'title': title,
         'password': _password,
+        'userId': FirebaseAuth.instance.currentUser!.uid,
       });
 
       _snack(
@@ -298,10 +299,9 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
                 side: BorderSide(color: AppMagicColors.gold.withOpacity(.5)),
               ),
               child: AnimatedCrossFade(
-                crossFadeState:
-                    _expanded
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
+                crossFadeState: _expanded
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
                 duration: const Duration(milliseconds: 300),
                 firstChild: Padding(
                   padding: const EdgeInsets.all(16),
@@ -390,17 +390,16 @@ class _NewpasswordScreenState extends State<NewpasswordScreen> {
                   ),
                 ),
                 onPressed: _loading ? null : _generatePassword,
-                label:
-                    _loading
-                        ? const SizedBox(
-                          height: 18,
-                          width: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                        : const Text('Conjurar Senha'),
+                label: _loading
+                    ? const SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text('Conjurar Senha'),
               ),
             ),
           ],

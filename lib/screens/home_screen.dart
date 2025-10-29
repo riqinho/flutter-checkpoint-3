@@ -117,7 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {
           // lista de senhas salvas
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: passwordRefs.snapshots(),
+              stream: passwordRefs
+                  .where('userId', isEqualTo: user!.uid)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
